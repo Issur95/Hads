@@ -1,0 +1,32 @@
+﻿{% extends "app/layout.html" %}
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+<form method="POST" action="{% url 'index2' %}">
+    {% csrf_token %}
+<select id="topoc" name="topoc">
+  <option value="HADS Proyectos">HADS Proyectos</option>
+  <option value="Metodologia de la Asignatura">Metodologia de la Asignatura</option>
+  <option value="Django">Django</option>
+  <option value="Python">Python</option>
+  <option value="Alumnado">Alumnado</option>
+  <option value="Otras Asignaturas">Otras Asignaturas</option>
+</select>
+    <button type="submit"> filtrar </button>
+</form>
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+  
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+{% if request.user.is_authenticated %}
+<a href="{% url 'add' %}"><h2>Insertar pregunta</h2></a> 
+{% endif %}
+
+{% endblock %}
